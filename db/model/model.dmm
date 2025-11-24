@@ -1,0 +1,1189 @@
+{
+	"tables": {
+		"81193a33-0424-454f-84d9-a4ea8e65d5ec": {
+			"id": "81193a33-0424-454f-84d9-a4ea8e65d5ec",
+			"visible": true,
+			"name": "RequestState",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "e805458f-af41-4817-b8d2-6a2de7d641e5",
+					"name": "RequestStateCode",
+					"datatype": "tinyint",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "bf9b1d09-a886-4149-892d-3ecf25624bef",
+					"name": "RequestStateName",
+					"datatype": "varchar",
+					"param": "50",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"e6afba08-0c40-42f0-a924-c537fdfe159a"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "98e20c9a-ea00-40c1-90c9-ae6906f1e731",
+					"name": "RequestState_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "2f09d54b-c7f2-4650-a6ed-c656330cc073",
+							"colid": "e805458f-af41-4817-b8d2-6a2de7d641e5"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "idpy"
+			}
+		},
+		"da51b78a-bd59-4c0c-9313-7691165cfce0": {
+			"id": "da51b78a-bd59-4c0c-9313-7691165cfce0",
+			"visible": true,
+			"name": "Request",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "d6aaca35-5d72-49d8-8351-fd33aaa6365c",
+					"name": "RequestId",
+					"datatype": "uniqueidentifier",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "e4d8bc88-6b64-4e02-9edd-9780659edbab",
+					"name": "RequestStateCode",
+					"datatype": "tinyint",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": true,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "22899e0a-1f70-43d7-b5bc-ac382b303755",
+					"name": "RequestHash",
+					"datatype": "nvarchar",
+					"param": "256",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "952fa83c-57ba-4877-9d02-c8981c868fb2",
+					"name": "ResponseJson",
+					"datatype": "nvarchar",
+					"param": "max",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "0d1e253b-180e-4564-ae00-68b62e292e53",
+					"name": "StatusCode",
+					"datatype": "int",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "bb886327-8ffd-4f28-984a-daa8d6223c6f",
+					"name": "SavedDate",
+					"datatype": "datetime2",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "sysutcdatetime()",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "32805a6b-3cc9-4bb2-ab4e-b2030d66ee3e",
+					"name": "RowVersion",
+					"datatype": "rowversion",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"e6afba08-0c40-42f0-a924-c537fdfe159a"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "d9fb9fcc-bd05-42ee-9afa-e2d4cf804f80",
+					"name": "Request_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "ab03108c-c9ee-4b14-a84f-7ef9c586ad67",
+							"colid": "d6aaca35-5d72-49d8-8351-fd33aaa6365c"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "idpy"
+			}
+		},
+		"1431f9c3-8822-4cf9-9394-fab95a439edc": {
+			"id": "1431f9c3-8822-4cf9-9394-fab95a439edc",
+			"visible": true,
+			"name": "EventType",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "20c80c94-5b91-4692-9220-ee86c4c64bbc",
+					"name": "EventTypeCode",
+					"datatype": "tinyint",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "5e7f6d4d-863f-4762-a9fc-f8c36e5a5e04",
+					"name": "EventTypeName",
+					"datatype": "varchar",
+					"param": "50",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"88f3569e-a1a1-4e5a-9a6c-05deb1252932"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "5bb69202-868a-49d1-82fb-64d912c55fe7",
+					"name": "EventType_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "a6401901-51ae-484a-95fe-cda4ff53b2bc",
+							"colid": "20c80c94-5b91-4692-9220-ee86c4c64bbc"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "idpy"
+			}
+		},
+		"a1383e90-4e80-4ade-96c5-3207510cc042": {
+			"id": "a1383e90-4e80-4ade-96c5-3207510cc042",
+			"visible": true,
+			"name": "OutboxMessages",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "f8fdf348-1fd7-4807-8c9f-c7f33a34dc5d",
+					"name": "OutboxMessageId",
+					"datatype": "uniqueidentifier",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "513d0dfb-78b1-49e1-918d-a626db17bd12",
+					"name": "EventTypeCode",
+					"datatype": "tinyint",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": true,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "9b325961-3561-4e1b-bb5b-d18cf6c84c73",
+					"name": "Payload",
+					"datatype": "nvarchar",
+					"param": "max",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "9a82fb27-4046-471c-9a68-09f522399353",
+					"name": "SavedDate",
+					"datatype": "datetime2",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "sysutcdatetime()",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "bd0854c1-c196-4c16-b67d-59e2ca970b2f",
+					"name": "ProcessedDate",
+					"datatype": "datetime2",
+					"param": "",
+					"pk": false,
+					"nn": false,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"88f3569e-a1a1-4e5a-9a6c-05deb1252932"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "f6ce84cd-2741-4856-a931-eab21bc50cb0",
+					"name": "OutboxMessages_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "5fe74f1a-9ea2-4c3b-8304-fdbd752b67a5",
+							"colid": "f8fdf348-1fd7-4807-8c9f-c7f33a34dc5d"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "idpy"
+			}
+		},
+		"d62decab-979d-4281-8810-6143696dcf06": {
+			"id": "d62decab-979d-4281-8810-6143696dcf06",
+			"visible": true,
+			"name": "InboxMessages",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "d589881f-b743-416d-b8b5-cdb034db1043",
+					"name": "InboxMessageId",
+					"datatype": "uniqueidentifier",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "9b074f89-e510-445c-bca7-b5c18dc1c36a",
+					"name": "ProcessedDate",
+					"datatype": "datetime2",
+					"param": "",
+					"pk": false,
+					"nn": false,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [],
+			"lines": [],
+			"keys": [
+				{
+					"id": "42f2fc5a-e54c-4682-8cf9-299f142eceb7",
+					"name": "InboxMessages_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "1e888e14-ec27-48f1-a206-8a34228a2b39",
+							"colid": "d589881f-b743-416d-b8b5-cdb034db1043"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "idpy"
+			}
+		},
+		"e9c54c5f-7644-4a3e-a266-972257df113f": {
+			"id": "e9c54c5f-7644-4a3e-a266-972257df113f",
+			"visible": true,
+			"name": "CattleStatus",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "33c22662-9791-4ccf-8147-78506ba926ea",
+					"name": "CattleStatusCode",
+					"datatype": "tinyint",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "e74af3e6-ea33-4adb-84af-9fde2cc9ad93",
+					"name": "CattleStatusName",
+					"datatype": "varchar",
+					"param": "50",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"509a970b-63f6-4cbc-bde4-0849c2102626"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "18e7f558-179d-4adc-b282-ccff37c1c18e",
+					"name": "CattleStatus_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "00af577a-111d-4728-9bd0-2c403b906e05",
+							"colid": "33c22662-9791-4ccf-8147-78506ba926ea"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "dbo"
+			}
+		},
+		"ce8d16ae-63e1-4237-9927-bf1f9b5216e3": {
+			"id": "ce8d16ae-63e1-4237-9927-bf1f9b5216e3",
+			"visible": true,
+			"name": "Cattle",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "c585f2dc-4bae-4019-b1fe-cf009a0e5f98",
+					"name": "CattleId",
+					"datatype": "int",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": true,
+						"identityOptions": "1,1"
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "8fe9b0cf-ecc0-497e-af2e-646ab96da5ee",
+					"name": "Birthdate",
+					"datatype": "datetime",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "86a6d5cd-fc98-41db-96e6-578276f89bb2",
+					"name": "SavedDate",
+					"datatype": "datetime2",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "sysutcdatetime()",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"954d246a-2cb2-4c40-93da-25acd7f6c537"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "9871cd8a-d841-4358-b8a0-24de26e66780",
+					"name": "CattleStatus_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "a965da33-3ecd-470d-be8c-788c9de9cf34",
+							"colid": "c585f2dc-4bae-4019-b1fe-cf009a0e5f98"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "dbo"
+			}
+		},
+		"11873a50-a0a5-4488-9e81-77aeb4181ec2": {
+			"id": "11873a50-a0a5-4488-9e81-77aeb4181ec2",
+			"visible": true,
+			"name": "CattleStatusHistory",
+			"desc": "",
+			"estimatedSize": "",
+			"cols": [
+				{
+					"id": "5fb3468d-f4ec-4dda-afa6-15e116230ea5",
+					"name": "CattleStatusHistoryId",
+					"datatype": "int",
+					"param": "",
+					"pk": true,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": true,
+						"identityOptions": "1,1"
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "1223c883-d557-4594-9fd5-1830e9acddf4",
+					"name": "CattleId",
+					"datatype": "int",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": true,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "0d71eb61-5e96-4b8a-8b89-279018ef79d9",
+					"name": "CattleStatusCode",
+					"datatype": "tinyint",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": true,
+					"comment": "",
+					"defaultvalue": "",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				},
+				{
+					"id": "b1a7d4b1-40ce-45bc-a5e9-0c202d758636",
+					"name": "SavedDate",
+					"datatype": "datetime2",
+					"param": "",
+					"pk": false,
+					"nn": true,
+					"fk": false,
+					"comment": "",
+					"defaultvalue": "sysutcdatetime()",
+					"data": "",
+					"after": "",
+					"collation": "",
+					"mssql": {
+						"computed": "",
+						"isIdentity": false,
+						"identityOptions": ""
+					},
+					"estimatedSize": ""
+				}
+			],
+			"relations": [
+				"509a970b-63f6-4cbc-bde4-0849c2102626",
+				"954d246a-2cb2-4c40-93da-25acd7f6c537"
+			],
+			"lines": [],
+			"keys": [
+				{
+					"id": "7bda9c21-7532-4c66-baef-1f1c0f162378",
+					"name": "CattleStatusHistory_pkey",
+					"isPk": true,
+					"mssql": {
+						"clustered": true
+					},
+					"cols": [
+						{
+							"id": "99cb7f1d-ebf8-470a-a4d7-a318b804bc93",
+							"colid": "5fb3468d-f4ec-4dda-afa6-15e116230ea5"
+						}
+					]
+				}
+			],
+			"indexes": [],
+			"embeddable": false,
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"mssql": {
+				"schema": "dbo"
+			}
+		}
+	},
+	"relations": {
+		"e6afba08-0c40-42f0-a924-c537fdfe159a": {
+			"id": "e6afba08-0c40-42f0-a924-c537fdfe159a",
+			"name": "Request_fkey",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "98e20c9a-ea00-40c1-90c9-ae6906f1e731",
+			"parent": "81193a33-0424-454f-84d9-a4ea8e65d5ec",
+			"child": "da51b78a-bd59-4c0c-9313-7691165cfce0",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "2e9d46cf-b90e-48a8-9b1c-a185a9e90f47",
+					"parentcol": "e805458f-af41-4817-b8d2-6a2de7d641e5",
+					"childcol": "e4d8bc88-6b64-4e02-9edd-9780659edbab"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"relationColor": "transparent",
+			"linegraphics": "default"
+		},
+		"88f3569e-a1a1-4e5a-9a6c-05deb1252932": {
+			"id": "88f3569e-a1a1-4e5a-9a6c-05deb1252932",
+			"name": "OutboxMessages_fkey",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "5bb69202-868a-49d1-82fb-64d912c55fe7",
+			"parent": "1431f9c3-8822-4cf9-9394-fab95a439edc",
+			"child": "a1383e90-4e80-4ade-96c5-3207510cc042",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "020e5992-3c7f-402f-8a76-94ab5aebdaa0",
+					"parentcol": "20c80c94-5b91-4692-9220-ee86c4c64bbc",
+					"childcol": "513d0dfb-78b1-49e1-918d-a626db17bd12"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"relationColor": "transparent",
+			"linegraphics": "default"
+		},
+		"509a970b-63f6-4cbc-bde4-0849c2102626": {
+			"id": "509a970b-63f6-4cbc-bde4-0849c2102626",
+			"name": "CattleStatusHistory_fkey",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "18e7f558-179d-4adc-b282-ccff37c1c18e",
+			"parent": "e9c54c5f-7644-4a3e-a266-972257df113f",
+			"child": "11873a50-a0a5-4488-9e81-77aeb4181ec2",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "4253e2db-6c7b-4618-b619-fb9cacb6d79e",
+					"parentcol": "33c22662-9791-4ccf-8147-78506ba926ea",
+					"childcol": "0d71eb61-5e96-4b8a-8b89-279018ef79d9"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"relationColor": "transparent",
+			"linegraphics": "default"
+		},
+		"954d246a-2cb2-4c40-93da-25acd7f6c537": {
+			"id": "954d246a-2cb2-4c40-93da-25acd7f6c537",
+			"name": "CattleStatusHistory_fkey1",
+			"desc": "",
+			"type": "identifying",
+			"parent_key": "9871cd8a-d841-4358-b8a0-24de26e66780",
+			"parent": "ce8d16ae-63e1-4237-9927-bf1f9b5216e3",
+			"child": "11873a50-a0a5-4488-9e81-77aeb4181ec2",
+			"c_mp": "true",
+			"c_mch": "true",
+			"c_p": "one",
+			"c_ch": "many",
+			"c_cp": "",
+			"c_cch": "",
+			"cols": [
+				{
+					"id": "b79ba3d6-9a93-44a8-9714-1deccb65aa20",
+					"parentcol": "c585f2dc-4bae-4019-b1fe-cf009a0e5f98",
+					"childcol": "1223c883-d557-4594-9fd5-1830e9acddf4"
+				}
+			],
+			"generate": true,
+			"generateCustomCode": true,
+			"customCode": "",
+			"relationColor": "transparent",
+			"linegraphics": "default"
+		}
+	},
+	"notes": {},
+	"lines": {},
+	"model": {
+		"name": "Cattlyst",
+		"id": "2ad4e231-b5bb-497a-8862-b9e9c5ade8b4",
+		"activeDiagram": "85bcb34b-e2eb-4da4-beff-e4bbcc2e30de",
+		"desc": "",
+		"path": "",
+		"type": "MSSQL",
+		"version": 1,
+		"parentTableInFkCols": true,
+		"caseConvention": "under",
+		"replaceSpace": "_",
+		"color": "transparent",
+		"sideSelections": true,
+		"isDirty": true,
+		"storedin": {
+			"major": 12,
+			"minor": 3,
+			"extra": 0
+		},
+		"laststoredin": {
+			"major": 12,
+			"minor": 3,
+			"extra": 0
+		},
+		"writeFileParam": false,
+		"authorName": "",
+		"companyDetails": "",
+		"companyUrl": "",
+		"def_coltopk": true,
+		"mssql": {
+			"schema": ""
+		},
+		"sqlSettings": {
+			"wrapLines": true,
+			"wrapOffset": 80,
+			"indent": true,
+			"indentationString": "spaces",
+			"indentationSize": 2,
+			"limitItemsOnLine": true,
+			"maxListItemsOnLine": 3,
+			"statementDelimiter": "GO",
+			"routineDelimiter": ";",
+			"keywordCase": "upper",
+			"identiferCase": "original",
+			"quotationExistance": "if_needed",
+			"includeSchema": "always",
+			"includeGeneratedNames": "always",
+			"quotationType": "square_brackets"
+		},
+		"nameAutoGeneration": {
+			"keys": true,
+			"indexes": true,
+			"relations": true
+		},
+		"connectionVersion": "",
+		"synchronizationSettings": {
+			"preserveData": "use_temporary_tables",
+			"ignoreSystemDefaults": "yes",
+			"includeWarnings": "yes",
+			"includeCreationSql": "no"
+		}
+	},
+	"otherObjects": {},
+	"diagrams": {
+		"85bcb34b-e2eb-4da4-beff-e4bbcc2e30de": {
+			"name": "Main Diagram",
+			"description": "",
+			"id": "85bcb34b-e2eb-4da4-beff-e4bbcc2e30de",
+			"keysgraphics": true,
+			"linegraphics": "detailed",
+			"zoom": 1,
+			"background": "transparent",
+			"lineColor": "transparent",
+			"isOpen": true,
+			"main": true,
+			"diagramItems": {
+				"81193a33-0424-454f-84d9-a4ea8e65d5ec": {
+					"referencedItemId": "81193a33-0424-454f-84d9-a4ea8e65d5ec",
+					"x": 59,
+					"y": 95,
+					"gHeight": 63,
+					"gWidth": 261,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"da51b78a-bd59-4c0c-9313-7691165cfce0": {
+					"referencedItemId": "da51b78a-bd59-4c0c-9313-7691165cfce0",
+					"x": 92,
+					"y": 217,
+					"gHeight": 153,
+					"gWidth": 247,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"1431f9c3-8822-4cf9-9394-fab95a439edc": {
+					"referencedItemId": "1431f9c3-8822-4cf9-9394-fab95a439edc",
+					"x": 488,
+					"y": 89,
+					"gHeight": 63,
+					"gWidth": 244,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"a1383e90-4e80-4ade-96c5-3207510cc042": {
+					"referencedItemId": "a1383e90-4e80-4ade-96c5-3207510cc042",
+					"x": 483,
+					"y": 254,
+					"gHeight": 117,
+					"gWidth": 279,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"d62decab-979d-4281-8810-6143696dcf06": {
+					"referencedItemId": "d62decab-979d-4281-8810-6143696dcf06",
+					"x": 827,
+					"y": 183,
+					"gHeight": 63,
+					"gWidth": 269,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"e9c54c5f-7644-4a3e-a266-972257df113f": {
+					"referencedItemId": "e9c54c5f-7644-4a3e-a266-972257df113f",
+					"x": 111,
+					"y": 775,
+					"gHeight": 63,
+					"gWidth": 254,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"ce8d16ae-63e1-4237-9927-bf1f9b5216e3": {
+					"referencedItemId": "ce8d16ae-63e1-4237-9927-bf1f9b5216e3",
+					"x": 115,
+					"y": 445,
+					"gHeight": 81,
+					"gWidth": 207,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				},
+				"11873a50-a0a5-4488-9e81-77aeb4181ec2": {
+					"referencedItemId": "11873a50-a0a5-4488-9e81-77aeb4181ec2",
+					"x": 92,
+					"y": 583,
+					"gHeight": 99,
+					"gWidth": 227,
+					"color": "#ffffff",
+					"background": "#03a9f4",
+					"resized": false,
+					"autoExpand": true,
+					"backgroundOpacity": "10",
+					"collapsed": false
+				}
+			},
+			"scroll": {
+				"x": 0,
+				"y": 0
+			},
+			"type": "erd",
+			"showHorizontal": true,
+			"showDescriptions": true,
+			"showIndicators": true,
+			"showProgress": true,
+			"lineWidth": "2",
+			"boxSize": "0",
+			"boxSpacing": "2",
+			"boxAlign": "center",
+			"showIndicatorCaptions": true,
+			"showEstimatedSize": true,
+			"showSchemaContainer": true,
+			"showEmbeddedInParents": true,
+			"showCardinalityCaptions": true,
+			"showRelationshipNames": false,
+			"showLineCaptions": false,
+			"showDependencyCaptions": false,
+			"showColumns": true,
+			"showColumnDataTypes": true,
+			"showSampleData": false,
+			"showTableIndexes": true,
+			"showTableDescriptions": true,
+			"showRelations": true,
+			"showLines": true,
+			"showDependencies": true,
+			"backgroundImage": "na",
+			"descriptionsColor": "transparent",
+			"embeddedSpacing": "2",
+			"showMainIcon": true,
+			"showLabels": true,
+			"showCustomizations": false,
+			"showExportDimensions": false,
+			"showCompleted": true,
+			"showAnimations": true
+		}
+	},
+	"diagramsOrder": [],
+	"order": [
+		"81193a33-0424-454f-84d9-a4ea8e65d5ec",
+		"da51b78a-bd59-4c0c-9313-7691165cfce0",
+		"1431f9c3-8822-4cf9-9394-fab95a439edc",
+		"a1383e90-4e80-4ade-96c5-3207510cc042",
+		"d62decab-979d-4281-8810-6143696dcf06",
+		"e9c54c5f-7644-4a3e-a266-972257df113f",
+		"ce8d16ae-63e1-4237-9927-bf1f9b5216e3",
+		"11873a50-a0a5-4488-9e81-77aeb4181ec2",
+		"e6afba08-0c40-42f0-a924-c537fdfe159a",
+		"88f3569e-a1a1-4e5a-9a6c-05deb1252932",
+		"509a970b-63f6-4cbc-bde4-0849c2102626",
+		"954d246a-2cb2-4c40-93da-25acd7f6c537"
+	],
+	"collapsedTreeItems": [],
+	"reverseStats": {}
+}
