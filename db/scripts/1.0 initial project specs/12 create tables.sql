@@ -72,7 +72,7 @@ create table dbo.[Cattle](
   [CattleTypeCode] tinyint not null,
   [Birthdate] datetime not null,
   [SavedDate] datetime2 default sysutcdatetime() not null,
-  constraint [CattleStatus_pkey] primary key([CattleId])
+  constraint [Cattle_pkey] primary key([CattleId])
 )
 GO
 
