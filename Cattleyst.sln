@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36717.8 d17.14
+VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CattleystWebApi", "CattleystWebApi\CattleystWebApi.csproj", "{BE39654F-D46D-47DE-8E8E-805193951541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CattleystOutboxWorker", "CattleystOutboxWorker\CattleystOutboxWorker.csproj", "{4DCAE634-4605-4CE2-9A3A-45D2DF5D1E35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CattleystData", "CattleystData\CattleystData.csproj", "{07E925CA-B1E0-4D97-A866-B794E7CA3055}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{BE39654F-D46D-47DE-8E8E-805193951541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE39654F-D46D-47DE-8E8E-805193951541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE39654F-D46D-47DE-8E8E-805193951541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DCAE634-4605-4CE2-9A3A-45D2DF5D1E35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCAE634-4605-4CE2-9A3A-45D2DF5D1E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCAE634-4605-4CE2-9A3A-45D2DF5D1E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCAE634-4605-4CE2-9A3A-45D2DF5D1E35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07E925CA-B1E0-4D97-A866-B794E7CA3055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07E925CA-B1E0-4D97-A866-B794E7CA3055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07E925CA-B1E0-4D97-A866-B794E7CA3055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07E925CA-B1E0-4D97-A866-B794E7CA3055}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
