@@ -122,7 +122,7 @@ values
 	,(2, 'Preparing Order')
 	,(3, 'Shipping')
 	,(4, 'Shipped')
-	,(5, 'Order Complete')
+	,(5, 'Delivered')
 ; 
 
 insert [idpy].[RequestState]
