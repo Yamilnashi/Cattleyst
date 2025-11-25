@@ -1,6 +1,6 @@
 ﻿namespace CattleystData.Interfaces
 {
-    public interface IDbReadContext
+    public interface IDboDbReadContext
     {
 
     }

@@ -4,11 +4,11 @@ using System;
 
 namespace CattleystData.Implementations
 {
-    public class DbContext : IDisposable, IDbReadContext, IDbWriteContext
+    public class DboDbContext : IDisposable, IDboDbReadContext, IDboDbWriteContext
     {
         private readonly SqlConnection _conn;
 
-        public DbContext(string connectionString)
+        public DboDbContext(string connectionString)
         {
             _conn = new SqlConnection(connectionString);
             _conn.Open();

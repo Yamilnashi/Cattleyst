@@ -18,10 +18,9 @@ namespace CattleystOutboxWorker
                 throw new Exception("ConnectionString cannot be null.");
             }
 
-            builder.Services.AddScoped<DbContext>(serviceProvider => new DbContext(connectionString));
-            builder.Services.AddScoped<IDbReadContext, DbContext>();
-            builder.Services.AddScoped<IDbWriteContext, DbContext>();
-            builder.Services.AddSingleton<IEventPublisher, InboxEventPublisher>();
+            builder.Services.AddTransient<IIdpyDbReadContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
+            builder.Services.AddTransient<IIdpyDbWriteContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
+            builder.Services.AddSingleton<IOutboxService, OutboxService>();
 
             var host = builder.Build();
             host.Run();
