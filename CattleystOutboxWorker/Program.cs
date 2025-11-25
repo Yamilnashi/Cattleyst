@@ -2,25 +2,27 @@ using CattleystData.Implementations;
 using CattleystData.Interfaces;
 using CattleystOutboxWorker.Implementations;
 using CattleystOutboxWorker.Interfaces;
-
 namespace CattleystOutboxWorker
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddHostedService<OutboxMessagesWorker>();
+            var builder = Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<OutboxMessagesWorker>();
+                    string? connectionString = hostContext.Configuration.GetConnectionString("dbCattleyst");
+                    if (string.IsNullOrEmpty(connectionString))
+                    {
+                        throw new Exception("ConnectionString cannot be null.");
+                    }
 
-            string? connectionString = builder.Configuration.GetConnectionString("dbCattleyst");
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new Exception("ConnectionString cannot be null.");
-            }
-
-            builder.Services.AddTransient<IIdpyDbReadContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
-            builder.Services.AddTransient<IIdpyDbWriteContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
-            builder.Services.AddSingleton<IOutboxService, OutboxService>();
+                    services.AddTransient<IIdpyDbReadContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
+                    services.AddTransient<IIdpyDbWriteContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
+                    services.AddSingleton<IOutboxService, OutboxService>();
+                });
 
             var host = builder.Build();
             host.Run();
