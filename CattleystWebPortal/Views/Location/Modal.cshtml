@@ -41,6 +41,7 @@
                 if (validated) {
                     $.post($frm[0].action, $frm.serialize(), function(response) {
                         if (response === 'OK') {
+                            toastr.success('Location saved.');
                             $frm.closest('div.modal').modal('hide');
                             locations.loadTable();
                         }

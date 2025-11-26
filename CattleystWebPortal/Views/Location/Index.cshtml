@@ -55,6 +55,7 @@
                                 const __requestVerificationToken = $frmDelete.find('input[name="__RequestVerificationToken"]').val();
                                 $.post($frmDelete[0].action, { __requestVerificationToken, locationId }, function(response) {
                                     if (response === 'OK') {
+                                        toastr.success('Location deleted.');
                                         locations.loadTable();
                                     }
                                 });

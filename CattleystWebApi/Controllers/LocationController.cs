@@ -23,17 +23,17 @@ namespace CattleystWebApi.Controllers
         }
 
         [HttpGet("list", Name = nameof(list))]
-        public async Task<IEnumerable<Location>> list()
+        public async Task<IActionResult> list()
         {
             IEnumerable<Location> locations = await _dbRead.LocationList();
-            return locations;
+            return Ok(locations);
         }
 
         [HttpGet("{locationId}", Name = nameof(Get))]
-        public async Task<Location> Get(int locationId)
+        public async Task<IActionResult> Get(int locationId)
         {
             Location location = await _dbRead.LocationGet(locationId);
-            return location;
+            return Ok(location);
         }
 
         [HttpPost("Add", Name = nameof(Add))]
@@ -43,7 +43,7 @@ namespace CattleystWebApi.Controllers
             return Ok();
         }
 
-        [HttpPut("{locationId}/Update", Name = nameof(Update))]
+        [HttpPatch("{locationId}/Update", Name = nameof(Update))]
         public async Task<IActionResult> Update(int locationId, [FromBody] LocationAddRequest request)
         {
             await _dbWrite.LocationUpdate(locationId, request.LocationName);

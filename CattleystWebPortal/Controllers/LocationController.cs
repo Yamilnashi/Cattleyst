@@ -1,10 +1,10 @@
 ﻿using CattleystData.Models;
 using CattleystWebPortal.Filters;
+using CattleystWebPortal.Interfaces;
+using CattleystWebPortal.Models.Apis;
 using CattleystWebPortal.ViewModels.Locations;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CattleystWebPortal.Controllers
 {
@@ -12,13 +12,13 @@ namespace CattleystWebPortal.Controllers
     public class LocationController : Controller
     {
         private readonly ILogger<LocationController> _logger;
-        private readonly HttpClient _client;
+        private readonly IApiService _apiService;
 
         public LocationController(ILogger<LocationController> logger,
-            IHttpClientFactory httpClientFactory)
+            IApiService apiService)
         {
             _logger = logger;
-            _client = httpClientFactory.CreateClient("CattleystWebApi");
+            _apiService = apiService;
         }
 
         #region GET
@@ -42,18 +42,11 @@ namespace CattleystWebPortal.Controllers
 
             if (locationId != null)
             {
-                HttpResponseMessage? response = await _client.GetAsync($"location/{(int)locationId}");
-                if (response.IsSuccessStatusCode)
+                ApiResult<Location?> result = await _apiService.GetAsync<Location?>($"location/{locationId}");
+                if (result.IsSuccess && 
+                    result.Data != null)
                 {
-                    string? content = await response.Content.ReadAsStringAsync();
-                    if (!string.IsNullOrEmpty(content))
-                    {
-                        Location? location = JsonConvert.DeserializeObject<Location>(content);
-                        if (location != null)
-                        {
-                            model.LocationName = location.LocationName;
-                        }
-                    }
+                    model.LocationName = result.Data.LocationName;
                 }
             }
 
@@ -69,21 +62,15 @@ namespace CattleystWebPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ModalSave(int? locationId, string locationName)
         {
-            HttpResponseMessage? response;
-            var data = new { locationName = locationName.Trim() };
+            object data = new { locationName = locationName.Trim() };
             if (locationId == null)
             {
-                // new location
-                              
-                response = await _client.PostAsJsonAsync("location/add", data);
+                // new location                              
+                await _apiService.PostAsJsonAsync("location/add", data);
             } else
             {
                 // update location
-                response = await _client.PutAsJsonAsync($"location/{locationId}/update", data);
-            }
-            if (!response.IsSuccessStatusCode)
-            {
-                return Content("Failed");
+               await _apiService.PatchAsJsonAsync($"location/{locationId}/update", data);
             }
             return Content("OK");
         }
@@ -94,12 +81,7 @@ namespace CattleystWebPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int locationId)
         {
-            HttpResponseMessage? response;
-            response = await _client.DeleteAsync($"location/{locationId}/delete");            
-            if (!response.IsSuccessStatusCode)
-            {
-                return Content("Failed");
-            }
+            await _apiService.DeleteAsync($"location/{locationId}/delete");
             return Content("OK");
         }
 
@@ -112,18 +94,11 @@ namespace CattleystWebPortal.Controllers
         public async Task<IActionResult> LocationListTableJson()
         {
             IEnumerable<Location> locations = [];
-            HttpResponseMessage? response = await _client.GetAsync("location/list");
-            if (response.IsSuccessStatusCode)
+            ApiResult<IEnumerable<Location>> result = await _apiService.GetAsync<IEnumerable<Location>>("location/list");
+            if (result.IsSuccess && 
+                result.Data != null)
             {
-                string? content = await response.Content.ReadAsStringAsync();
-                if (!string.IsNullOrEmpty(content))
-                {
-                    IEnumerable<Location>? models = JsonConvert.DeserializeObject<IEnumerable<Location>>(content);
-                    if (models != null)
-                    {
-                        locations = models;
-                    }
-                }                
+                locations = result.Data;
             }
             string json = JsonConvert.SerializeObject(new { data = locations });
             return Content(json);

@@ -1,5 +1,7 @@
 using CattleystData.Implementations;
 using CattleystData.Interfaces;
+using CattleystWebPortal.Implementations;
+using CattleystWebPortal.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CattleystWebPortal
@@ -16,7 +18,12 @@ namespace CattleystWebPortal
             {
                 throw new ArgumentNullException(nameof(hostAddress));
             }            
-            builder.Services.AddHttpClient("CattleystWebApi", serviceProvider => serviceProvider.BaseAddress = new Uri(hostAddress));
+            builder.Services.AddHttpClient("CattleystWebApi", serviceProvider =>
+            {
+                serviceProvider.BaseAddress = new Uri(hostAddress);
+            });
+
+            builder.Services.AddSingleton<IApiService, ApiService>();
 
             var app = builder.Build();
 
