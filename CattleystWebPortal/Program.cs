@@ -1,3 +1,7 @@
+using CattleystData.Implementations;
+using CattleystData.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CattleystWebPortal
 {
     public class Program
@@ -6,10 +10,23 @@ namespace CattleystWebPortal
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            string? connectionString = builder.Configuration.GetConnectionString("dbCattleyst");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException(nameof(connectionString));
+            }
 
-            builder.Services.AddHttpClient();
+            // Add services to the container.
+            builder.Services.AddScoped<IDboDbReadContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));
+            builder.Services.AddScoped<IDboDbWriteContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));
+
+            builder.Services.AddControllersWithViews();
+            string? hostAddress = builder.Configuration["Api:CattleystApiHost"];
+            if (string.IsNullOrEmpty(hostAddress))
+            {
+                throw new ArgumentNullException(nameof(hostAddress));
+            }            
+            builder.Services.AddHttpClient("CattleystWebApi", serviceProvider => serviceProvider.BaseAddress = new Uri(hostAddress));
 
             var app = builder.Build();
 

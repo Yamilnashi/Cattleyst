@@ -1,6 +1,11 @@
 ﻿using CattleystData.Interfaces;
+using CattleystData.Models;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace CattleystData.Implementations
 {
@@ -19,12 +24,16 @@ namespace CattleystData.Implementations
             _conn.Dispose();
         }
 
-        public SqlConnection GetConnection()
+        public Task<IEnumerable<Location>> LocationList()
         {
-            return _conn;
+            string sql = @"
+                select
+                    LocationId
+                    ,LocationName
+                from
+                    [dbo].[Location]
+            ;";
+            return _conn.QueryAsync<Location>(sql, commandType: CommandType.Text);
         }
-
-
-
     }
 }

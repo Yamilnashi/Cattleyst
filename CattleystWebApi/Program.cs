@@ -9,10 +9,14 @@ namespace CattleystWebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            string? connectionString = builder.Configuration.GetConnectionString("dbCattleyst");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException(nameof(connectionString));  
+            }
             // Add services to the container.
-            builder.Services.AddScoped<IDboDbReadContext, DboDbContext>();
-            builder.Services.AddScoped<IDboDbWriteContext, DboDbContext>();
+            builder.Services.AddScoped<IDboDbReadContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));
+            builder.Services.AddScoped<IDboDbWriteContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
