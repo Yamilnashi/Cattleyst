@@ -1,4 +1,7 @@
 
+using CattleystData.Implementations;
+using CattleystData.Interfaces;
+
 namespace CattleystWebApi
 {
     public class Program
@@ -8,6 +11,8 @@ namespace CattleystWebApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<IDboDbReadContext, DboDbContext>();
+            builder.Services.AddScoped<IDboDbWriteContext, DboDbContext>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,0 +1,14 @@
+﻿@model CattleystData.Models.HealthCheckResult
+
+<div class="text-center">
+    <h1 class="display-4">Health Check Result</h1>
+    <p>
+        @if (Model == null)
+        {
+            @:Cannot get result.
+        } else
+        {
+            @:dbConnection: @Model.DbConnection
+        }
+    </p>
+</div>
