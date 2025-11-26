@@ -2,6 +2,8 @@
 using CattleystData.Models.Idempotency;
 using CattleystOutboxWorker.Interfaces;
 using Microsoft.Data.SqlClient;
+using Polly;
+using Polly.Retry;
 using System.Data.Common;
 
 namespace CattleystOutboxWorker.Implementations
@@ -47,14 +49,31 @@ namespace CattleystOutboxWorker.Implementations
         #region Private
         private async Task CreateInboxMessage(OutboxMessage outboxMessage, SqlConnection connection, DbTransaction transaction)
         {
+            AsyncRetryPolicy retryPolicy = Policy
+                .Handle<SqlException>(ex => ex.Number is 10060 or 10053)
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), 
+                    onRetryAsync: async (ex, timespan, retryAttempt, ctx) =>
+                {
+                    _logger.LogWarning("Retry {retryAttempt} after {timespan}s for InboxAdd on error: {ex}", retryAttempt, timespan.TotalSeconds, ex);
+                    await Task.CompletedTask;
+                });
             Guid inboxMessageId = Guid.NewGuid();
-            await _dbWrite.InboxMessageAdd(inboxMessageId, (byte)outboxMessage.EventTypeCode, outboxMessage.Payload, connection, transaction);
+            await retryPolicy.ExecuteAsync(() => 
+                _dbWrite.InboxMessageAdd(inboxMessageId, (byte)outboxMessage.EventTypeCode, outboxMessage.Payload, connection, transaction));
         }
 
         private async Task UpdateOutboxMessage(OutboxMessage outboxMessage, SqlConnection connection, DbTransaction transaction)
         {
+            AsyncRetryPolicy retryPolicy = Policy
+                .Handle<SqlException>(ex => ex.Number is 10060 or 10053)
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    onRetryAsync: async (ex, timespan, retryAttempt, ctx) =>
+                    {
+                        _logger.LogWarning("Retry {retryAttempt} after {timespan}s for InboxAdd on error: {ex}", retryAttempt, timespan.TotalSeconds, ex);
+                        await Task.CompletedTask;
+                    });
             DateTime processedDate = DateTime.UtcNow;
-            await _dbWrite.OutboxMessageUpdate(outboxMessage.OutboxMessageId, processedDate, connection, transaction);
+            await retryPolicy.ExecuteAsync(() => _dbWrite.OutboxMessageUpdate(outboxMessage.OutboxMessageId, processedDate, connection, transaction));
         }
         #endregion
     }
