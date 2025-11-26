@@ -7,5 +7,6 @@ namespace CattleystData.Interfaces
     public interface IDboDbReadContext
     {
         Task<IEnumerable<Location>> LocationList();
+        Task<Location> LocationGet(int locationId);
     }
 }

@@ -35,5 +35,61 @@ namespace CattleystData.Implementations
             ;";
             return _conn.QueryAsync<Location>(sql, commandType: CommandType.Text);
         }
+
+        public Task<Location> LocationGet(int locationId)
+        {
+            string sql = @"
+                select
+                    LocationId
+                    ,LocationName
+                from
+                    [dbo].[Location]
+                where
+                    LocationId = @LocationId
+            ;";
+            var values = new { locationId };
+            return _conn.QueryFirstOrDefaultAsync<Location>(sql, values, commandType: CommandType.Text);
+        }
+
+        public Task LocationAdd(string locationName)
+        {
+            string sql = @"
+                insert
+                    [dbo].[Location]
+                (
+                    LocationName
+                )
+                values
+                    (@LocationName)
+            ;";
+            var values = new { locationName };
+            return _conn.ExecuteAsync(sql, values, commandType: CommandType.Text);
+        }
+
+        public Task LocationUpdate(int locationId, string locationName)
+        {
+            string sql = @"
+                update
+                    [dbo].[Location]
+                set
+                    LocationName = @LocationName
+                where
+                    LocationId = @LocationId
+            ;";
+            var values = new { locationId, locationName };
+            return _conn.ExecuteAsync(sql, values, commandType: CommandType.Text);
+        }
+
+        public Task LocationDelete(int locationId)
+        {
+            string sql = @"
+                delete
+                    [dbo].[Location]
+                where
+                    LocationId = @LocationId
+            ;";
+            var values = new { locationId };
+            return _conn.ExecuteAsync(sql, values, commandType: CommandType.Text);
+        }
     }
 }

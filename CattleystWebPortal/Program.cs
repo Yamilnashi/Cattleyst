@@ -10,16 +10,6 @@ namespace CattleystWebPortal
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            string? connectionString = builder.Configuration.GetConnectionString("dbCattleyst");
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentNullException(nameof(connectionString));
-            }
-
-            // Add services to the container.
-            builder.Services.AddScoped<IDboDbReadContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));
-            builder.Services.AddScoped<IDboDbWriteContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));
-
             builder.Services.AddControllersWithViews();
             string? hostAddress = builder.Configuration["Api:CattleystApiHost"];
             if (string.IsNullOrEmpty(hostAddress))

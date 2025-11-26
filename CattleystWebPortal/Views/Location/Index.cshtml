@@ -6,10 +6,13 @@
         Add Location
     </button>
 </div>
-<div>
-    <table id="tbl-locations" class="table table-sm table-striped table-bordered w-100"></table>
-</div>
-
+@using(Html.BeginForm("Delete", "Location", FormMethod.Post, new { @id = "frm-location-delete" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <table id="tbl-locations" class="table table-sm table-striped table-bordered w-100"></table>
+    </div>
+}
 
 <div class="modal fade" id="modal-md" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -23,6 +26,7 @@
         'use strict';
         const $btnAddLocation = $("#btn-add-location");
         const $tbl = $('#tbl-locations');
+        const $frmDelete = $('#frm-location-delete');
         const $modalMd = $('#modal-md');
         const $modalMdContent = $("#modal-md-content");
         const tables = [];
@@ -44,6 +48,21 @@
                             $modalMd.modal('show');
                             app.loadSpinnerAjax($modalMdContent, routes.locationModal, { locationId });
                         })
+                        .on('click', 'button.btn-location-delete', function() {
+                            const $btn = $(this);
+                            const locationId = $btn.data('locationid');
+                            app.confirm(() => {
+                                const __requestVerificationToken = $frmDelete.find('input[name="__RequestVerificationToken"]').val();
+                                $.post($frmDelete[0].action, { __requestVerificationToken, locationId }, function(response) {
+                                    if (response === 'OK') {
+                                        locations.loadTable();
+                                    }
+                                });
+                            }, 'Delete Location?',
+                                'Are you sure you want to delete this location?',
+                                'Delete Location',
+                                'Cancel');
+                        })
                         .DataTable({
                             ajax: {
                                 url: routes.locationList
@@ -52,12 +71,21 @@
                             columnDefs: [
                                 {
                                     targets: [0],
+                                    width: '10rem',
+                                    className: 'text-center align-middle',
                                     render: function(data, type, row, meta) {
                                         if (type === 'display') {
-                                            return `
-                                                <button type='button' class='btn btn-primary btn-sm btn-location-edit' data-locationid='${data}'>
-                                                    ${data}
-                                                </button>
+                                            return `                                                
+                                                <div class='btn-group'>
+                                                    <button type='button' class='btn btn-primary btn-sm btn-location-edit' data-locationid='${data}'>
+                                                        <i class='fa fa-pencil-alt' aria-hidden='true'></i>
+                                                        <span class='visually-hidden'>Edit</span>
+                                                    </button>
+                                                    <button type='button' class='btn btn-danger btn-sm btn-location-delete' data-locationid='${data}'>
+                                                        <i class='fa fa-trash' aria-hidden='true'></i>
+                                                        <span class='visually-hidden'>Delete</span>
+                                                    </button>
+                                                </div>                                                
                                             `;
                                         }
                                         return data;
