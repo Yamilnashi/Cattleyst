@@ -69,96 +69,90 @@ namespace CattleystWebApi.Middleware
                     SavedDate = DateTime.UtcNow
                 };
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
-                    await connection.OpenAsync();
-                    using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    IsolationLevel = IsolationLevel.ReadCommitted,
+                    Timeout = TimeSpan.FromSeconds(30)
+                }, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    try
                     {
-                        IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.FromSeconds(30)
-                    }))
-                    {
-                        using SqlTransaction dbTrans = connection.BeginTransaction();  // Sync for .NET Standard compat
-                        try
-                        {                           
-                            existingRequest = await dbRead.IdempotencyRequestGet(keyGuid, connection, dbTrans);
-                            if (existingRequest != null)
-                            {
-                                if (existingRequest.RequestHash != requestHash)
-                                {
-                                    _logger.LogWarning("Idempotency key {key} reused with mismatched hash.", keyGuid);
-                                    context.Response.StatusCode = StatusCodes.Status409Conflict;
-                                    await context.Response.WriteAsync("Idempotency key reused with mismatched payload. Use a new key for changes.");
-                                    return;
-                                }
-
-                                if (existingRequest.RequestStateCode == ERequestState.Completed)
-                                {
-                                    context.Response.StatusCode = existingRequest.StatusCode ?? 200;
-                                    if (!string.IsNullOrEmpty(existingRequest.ResponseJson))
-                                    {
-                                        context.Response.ContentType = "application/json";
-                                        await context.Response.WriteAsync(existingRequest.ResponseJson);
-                                    }
-                                    return;
-                                }
-                                else if (existingRequest.RequestStateCode == ERequestState.Pending)
-                                {
-                                    context.Response.StatusCode = StatusCodes.Status409Conflict;
-                                    await context.Response.WriteAsync("Request in progress.");
-                                    return;
-                                }
-                                else if (existingRequest.RequestStateCode == ERequestState.Failed)
-                                {
-                                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                                    await context.Response.WriteAsync("Previous request failed; retry with new key.");
-                                    return;
-                                }
-                            }                            
-                            
-                            await dbWrite.IdempotencyRequestAdd(newRequest.RequestId, (byte)newRequest.RequestStateCode,
-                                newRequest.RequestHash, newRequest.SavedDate, connection, dbTrans);
-
-                            var originalBody = context.Response.Body;
-                            await using var responseBody = new MemoryStream();
-                            context.Response.Body = responseBody;
-
-                            await _next(context);  // Controller joins trans if using same conn string
-
-                            responseBody.Seek(0, SeekOrigin.Begin);
-                            string responseJson = await ReadStreamAsync(responseBody);
-                            if (string.IsNullOrEmpty(responseJson))
-                            {
-                                responseJson = JsonConvert.SerializeObject(new { });
-                            }
-
-                            // Update completed with shared conn/trans
-                            newRequest.ResponseJson = responseJson;
-                            newRequest.StatusCode = context.Response.StatusCode;
-                            newRequest.RequestStateCode = ERequestState.Completed;
-
-                            await dbWrite.IdempotencyRequestUpdate(newRequest.RequestId, newRequest.ResponseJson,
-                                newRequest.StatusCode, (byte)newRequest.RequestStateCode, connection, dbTrans);
-
-                            dbTrans.Commit();  // Commit db trans
-                            transactionScope.Complete();  // Commit scope
-
-                            responseBody.Seek(0, SeekOrigin.Begin);
-                            await responseBody.CopyToAsync(originalBody);
-                        }
-                        catch (Exception ex)
+                        existingRequest = await dbRead.IdempotencyRequestGet(keyGuid);
+                        if (existingRequest != null)
                         {
-                            _logger.LogError(ex, "Idempotency processing failed—rolling back.");
-                            // mark failed (if possible before rollback)
-                            if (newRequest != null)
+                            if (existingRequest.RequestHash != requestHash)
                             {
-                                newRequest.RequestStateCode = ERequestState.Failed;
-                                await dbWrite.IdempotencyRequestUpdate(newRequest.RequestId, null, null, (byte)newRequest.RequestStateCode, connection, dbTrans);
+                                _logger.LogWarning("Idempotency key {key} reused with mismatched hash.", keyGuid);
+                                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                                await context.Response.WriteAsync("Idempotency key reused with mismatched payload. Use a new key for changes.");
+                                return;
                             }
-                            throw;  // scope/dbTrans rollback on dispose
+
+                            if (existingRequest.RequestStateCode == ERequestState.Completed)
+                            {
+                                context.Response.StatusCode = existingRequest.StatusCode ?? 200;
+                                if (!string.IsNullOrEmpty(existingRequest.ResponseJson))
+                                {
+                                    context.Response.ContentType = "application/json";
+                                    await context.Response.WriteAsync(existingRequest.ResponseJson);
+                                }
+                                return;
+                            }
+                            else if (existingRequest.RequestStateCode == ERequestState.Pending)
+                            {
+                                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                                await context.Response.WriteAsync("Request in progress.");
+                                return;
+                            }
+                            else if (existingRequest.RequestStateCode == ERequestState.Failed)
+                            {
+                                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                                await context.Response.WriteAsync("Previous request failed; retry with new key.");
+                                return;
+                            }
                         }
+
+                        await dbWrite.IdempotencyRequestAdd(newRequest.RequestId, (byte)newRequest.RequestStateCode,
+                            newRequest.RequestHash, newRequest.SavedDate);
+
+                        var originalBody = context.Response.Body;
+                        await using var responseBody = new MemoryStream();
+                        context.Response.Body = responseBody;
+
+                        await _next(context);  // Controller joins trans if using same conn string
+
+                        responseBody.Seek(0, SeekOrigin.Begin);
+                        string responseJson = await ReadStreamAsync(responseBody);
+                        if (string.IsNullOrEmpty(responseJson))
+                        {
+                            responseJson = JsonConvert.SerializeObject(new { });
+                        }
+
+                        // Update completed with shared conn/trans
+                        newRequest.ResponseJson = responseJson;
+                        newRequest.StatusCode = context.Response.StatusCode;
+                        newRequest.RequestStateCode = ERequestState.Completed;
+
+                        await dbWrite.IdempotencyRequestUpdate(newRequest.RequestId, newRequest.ResponseJson,
+                            newRequest.StatusCode, (byte)newRequest.RequestStateCode);
+
+                        transactionScope.Complete();  // Commit scope
+
+                        responseBody.Seek(0, SeekOrigin.Begin);
+                        await responseBody.CopyToAsync(originalBody);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Idempotency processing failed—rolling back.");
+                        // mark failed (if possible before rollback)
+                        if (newRequest != null)
+                        {
+                            newRequest.RequestStateCode = ERequestState.Failed;
+                            await dbWrite.IdempotencyRequestUpdate(newRequest.RequestId, null, null, (byte)newRequest.RequestStateCode);
+                        }
+                        throw;  // scope/dbTrans rollback on dispose
                     }
                 }
-
             }     
         }
 
