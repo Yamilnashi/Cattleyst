@@ -53,12 +53,22 @@
                             const locationId = $btn.data('locationid');
                             app.confirm(() => {
                                 const __requestVerificationToken = $frmDelete.find('input[name="__RequestVerificationToken"]').val();
-                                $.post($frmDelete[0].action, { __requestVerificationToken, locationId }, function(response) {
-                                    if (response === 'OK') {
-                                        toastr.success('Location deleted.');
-                                        locations.loadTable();
+                                $.ajax({
+                                    url: $frmDelete[0].action,
+                                    type: 'POST',
+                                    headers: { 'Idempotency-Key' : app.generateUUID() },
+                                    data: { __requestVerificationToken, locationId },
+                                    success: function(response) {
+                                        if (response === 'OK') {
+                                            toastr.success('Location deleted.');
+                                            locations.loadTable();
+                                        }
+                                    },
+                                    fail: function(xhr, textStatus, error) {
+                                        console.error(error);
                                     }
                                 });
+                                
                             }, 'Delete Location?',
                                 'Are you sure you want to delete this location?',
                                 'Delete Location',

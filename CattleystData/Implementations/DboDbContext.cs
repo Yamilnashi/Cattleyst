@@ -16,7 +16,6 @@ namespace CattleystData.Implementations
         public DboDbContext(string connectionString)
         {
             _conn = new SqlConnection(connectionString);
-            _conn.Open();
         }
 
         public void Dispose()

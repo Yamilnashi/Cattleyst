@@ -8,12 +8,15 @@ namespace CattleystWebPortal.Implementations
     {
         private readonly ILogger<ApiService> _logger;
         private readonly HttpClient _client;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ApiService(ILogger<ApiService> logger,
-            IHttpClientFactory clientFactory)
+            IHttpClientFactory clientFactory,
+            IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _client = clientFactory.CreateClient("CattleystWebApi");
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public Task<ApiResult<T>> GetAsync<T>(string route, params object[]? values) =>
@@ -50,6 +53,22 @@ namespace CattleystWebPortal.Implementations
             CancellationToken cancellationToken = default)
         {
             HttpRequestMessage request = new HttpRequestMessage(method, route);
+
+            if (method == HttpMethod.Post || 
+                method == HttpMethod.Put || 
+                method == HttpMethod.Delete || 
+                method == HttpMethod.Patch)
+            {
+                string? idempotencyKey = _httpContextAccessor.HttpContext?.Request.Headers["Idempotency-Key"].FirstOrDefault();
+                if (!string.IsNullOrEmpty(idempotencyKey))
+                {
+                    request.Headers.Add("Idempotency-Key", idempotencyKey);
+                    _logger.LogDebug("Forwarded Idempotency-Key {Key} to {Method} request for {Route}", idempotencyKey, method, route);
+                } else
+                {
+                    _logger.LogWarning("No Idempotency-Key header found in context for {Method} {Route}-proceeding without", method, route);
+                }
+            }
 
             if (content != null)
             {

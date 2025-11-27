@@ -1,6 +1,7 @@
 ﻿using CattleystData.Models;
 using CattleystWebPortal.Filters;
 using CattleystWebPortal.Interfaces;
+using CattleystWebPortal.Models;
 using CattleystWebPortal.Models.Apis;
 using CattleystWebPortal.ViewModels.Locations;
 using Microsoft.AspNetCore.Mvc;

@@ -39,11 +39,20 @@
                 e.preventDefault();
                 const validated = $frm.parsley().validate();
                 if (validated) {
-                    $.post($frm[0].action, $frm.serialize(), function(response) {
-                        if (response === 'OK') {
+                    $.ajax({
+                        url: $frm[0].action,
+                        type: 'POST',
+                        headers: { 'Idempotency-Key' : app.generateUUID() },
+                        data: $frm.serialize(),
+                        success: function(response) {
+                            if (response === 'OK') {
                             toastr.success('Location saved.');
                             $frm.closest('div.modal').modal('hide');
                             locations.loadTable();
+                        }
+                        },
+                        fail: function(xhr, textStatus, error) {
+                            console.error(error);
                         }
                     });
                 }

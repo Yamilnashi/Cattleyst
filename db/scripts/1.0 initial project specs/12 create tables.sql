@@ -12,8 +12,8 @@ create table idpy.[Request](
   [RequestId] uniqueidentifier not null,
   [RequestStateCode] tinyint not null,
   [RequestHash] nvarchar(256) not null,
-  [ResponseJson] nvarchar(max) not null,
-  [StatusCode] int not null,
+  [ResponseJson] nvarchar(max),
+  [StatusCode] int,
   [SavedDate] datetime2 default sysutcdatetime() not null,
   [RowVersion] rowversion not null,
   constraint [Request_pkey] primary key([RequestId])

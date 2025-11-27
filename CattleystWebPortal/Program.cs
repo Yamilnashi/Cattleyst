@@ -1,8 +1,5 @@
-using CattleystData.Implementations;
-using CattleystData.Interfaces;
 using CattleystWebPortal.Implementations;
 using CattleystWebPortal.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CattleystWebPortal
 {
@@ -24,6 +21,7 @@ namespace CattleystWebPortal
             });
 
             builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
