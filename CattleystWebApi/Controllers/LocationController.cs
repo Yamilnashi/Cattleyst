@@ -22,36 +22,36 @@ namespace CattleystWebApi.Controllers
             _dbWrite = dbWrite;
         }
 
-        [HttpGet("list", Name = nameof(list))]
-        public async Task<IActionResult> list()
+        [HttpGet("list", Name = nameof(LocationList))]
+        public async Task<IActionResult> LocationList()
         {
             IEnumerable<Location> locations = await _dbRead.LocationList();
             return Ok(locations);
         }
 
-        [HttpGet("{locationId}", Name = nameof(Get))]
-        public async Task<IActionResult> Get(int locationId)
+        [HttpGet("{locationId}", Name = nameof(LocationGet))]
+        public async Task<IActionResult> LocationGet(int locationId)
         {
             Location location = await _dbRead.LocationGet(locationId);
             return Ok(location);
         }
 
-        [HttpPost("Add", Name = nameof(Add))]
-        public async Task<IActionResult> Add([FromBody] LocationAddRequest request)
+        [HttpPost("Add", Name = nameof(LocationAdd))]
+        public async Task<IActionResult> LocationAdd([FromBody] LocationAddRequest request)
         {
             await _dbWrite.LocationAdd(request.LocationName);
             return Ok();
         }
 
-        [HttpPatch("{locationId}/Update", Name = nameof(Update))]
-        public async Task<IActionResult> Update(int locationId, [FromBody] LocationAddRequest request)
+        [HttpPatch("{locationId}/Update", Name = nameof(LocationUpdate))]
+        public async Task<IActionResult> LocationUpdate(int locationId, [FromBody] LocationAddRequest request)
         {
             await _dbWrite.LocationUpdate(locationId, request.LocationName);
             return Ok();
         }
 
-        [HttpDelete("{locationId}/Delete", Name = nameof(Delete))]
-        public async Task<IActionResult> Delete(int locationId)
+        [HttpDelete("{locationId}/Delete", Name = nameof(LocationDelete))]
+        public async Task<IActionResult> LocationDelete(int locationId)
         {
             await _dbWrite.LocationDelete(locationId);
             return Ok();

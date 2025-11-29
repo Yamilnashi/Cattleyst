@@ -1,38 +1,51 @@
-﻿<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+﻿@{
+
+    string currentPage = ViewContext.RouteData.Values["Controller"]!.ToString()!;
+    Func<string, string> IsActive = (string page) =>
+    {
+        if (!page.Equals(currentPage, StringComparison.OrdinalIgnoreCase))
+        {
+            return string.Empty;
+        }
+        return "active";
+    };
+}
+
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="nav-link @IsActive("Home")" asp-area="" asp-controller="Home" asp-action="Index">
                     <i class="fa fa-dashboard" aria-hidden="true"></i>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Location" asp-action="Index">
+                <a class="nav-link @IsActive("Location")" asp-area="" asp-controller="Location" asp-action="Index">
                     <i class="fa fa-tractor" aria-hidden="true"></i>
                     Farms
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Cattle" asp-action="Index">
+                <a class="nav-link @IsActive("Cattle")" asp-area="" asp-controller="Cattle" asp-action="Index">
                     <i class="fa fa-cow" aria-hidden="true"></i>
                     Cattle
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Beef" asp-action="Index">
+                <a class="nav-link @IsActive("Beef")" asp-area="" asp-controller="Beef" asp-action="Index">
                     <i class="fa fa-burger" aria-hidden="true"></i>
                     Beef
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Customer" asp-action="Index">
+                <a class="nav-link @IsActive("Customer")" asp-area="" asp-controller="Customer" asp-action="Index">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     Customers
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Report" asp-action="Index">
+                <a class="nav-link @IsActive("Report")" asp-area="" asp-controller="Report" asp-action="Index">
                     <i class="fa fa-chart-line" aria-hidden="true"></i>
                     Reports
                 </a>

@@ -1,11 +1,11 @@
 ﻿using CattleystData.Models;
-using CattleystData.Models.Enums;
+using CattleystWebPortal.Filters;
 using CattleystWebPortal.Interfaces;
 using CattleystWebPortal.Models.Apis;
 using CattleystWebPortal.ViewModels.Cattles;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CattleystWebPortal.Controllers
 {
@@ -39,5 +39,32 @@ namespace CattleystWebPortal.Controllers
             }
             return View(model);
         }
+
+        #region JSON
+        [HttpGet]
+        [AjaxOnly]
+        [Route("CattleListTableJson")]
+        public async Task<IActionResult> CattleListTableJson(int[]? locationIds = null)
+        {
+            IEnumerable<Cattle> cattle = [];
+
+            ApiResult<IEnumerable<Cattle>> result = locationIds == null
+                ? await _apiService.GetAsync<IEnumerable<Cattle>>("cattle/list")
+                : await _apiService.GetAsync<IEnumerable<Cattle>>("cattle/list", new Dictionary<string, object>
+                {
+                    { "locationId", locationIds }
+                });
+
+            if (result.IsSuccess &&
+                result.Data != null)
+            {
+                cattle = result.Data;
+            }
+
+            string json = JsonConvert.SerializeObject(new { data = cattle });
+            return Content(json, "application/json");
+        }
+        #endregion
+
     }
 }

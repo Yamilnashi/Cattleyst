@@ -1,6 +1,7 @@
 ﻿using CattleystWebPortal.Interfaces;
 using CattleystWebPortal.Models.Apis;
 using System.Net;
+using System.Text;
 
 namespace CattleystWebPortal.Implementations
 {
@@ -19,10 +20,10 @@ namespace CattleystWebPortal.Implementations
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Task<ApiResult<T>> GetAsync<T>(string route, params object[]? values) =>
+        public Task<ApiResult<T>> GetAsync<T>(string route, Dictionary<string, object>? values = null) =>
             SendAsync<T>(HttpMethod.Get, FormatRoute(route, values));
 
-        public Task<ApiResult> DeleteAsync(string route, params object[]? values) =>
+        public Task<ApiResult> DeleteAsync(string route, Dictionary<string, object>? values = null) =>
             SendAsync<Unit>(HttpMethod.Delete, FormatRoute(route, values))
                 .ContinueWith(t => (ApiResult)t.Result, TaskScheduler.Default);
 
@@ -114,11 +115,32 @@ namespace CattleystWebPortal.Implementations
             }
         }
 
-        private string FormatRoute(string route, params object[]? values)
+        private string FormatRoute(string route, Dictionary<string, object>? values)
         {
-            return values == null || values.Length == 0
-                ? route
-                : string.Format(route, values);
+            if (values == null)
+            {
+                return route;
+            }
+
+            string CombineListIntoQueryString(string key, Array list)
+            {
+                StringBuilder qs = new();
+                foreach (object obj in list)
+                {
+                    qs.Append($"{key}={obj ?? string.Empty}");
+                }
+                return qs.ToString();
+            };
+
+            StringBuilder fullQs = new();
+            foreach (KeyValuePair<string, object> kvp in values)
+            {
+                if (kvp.Value is Array list)
+                {
+                    fullQs.Append(CombineListIntoQueryString(kvp.Key, list));
+                }                
+            }
+            return $"{route}?{fullQs.ToString()}";
         }
         #endregion
 

@@ -8,5 +8,6 @@ namespace CattleystData.Interfaces
     {
         Task<IEnumerable<Location>> LocationList();
         Task<Location> LocationGet(int locationId);
+        Task<IEnumerable<Cattle>> CattleList(int[] locationIds = null);
     }
 }
