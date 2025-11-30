@@ -109,5 +109,28 @@ namespace CattleystData.Implementations
             return _conn.QueryAsync<Cattle>(sql, values, commandType: CommandType.Text);
         }
 
+        public Task CattleAdd(int locationId, byte cattleTypeCode, DateTime birthdate)
+        {
+            string sql = @"
+                insert
+                    [dbo].[Cattle]
+                (
+                    LocationId
+                    ,CattleTypeCode
+                    ,Birthdate
+                    ,SavedDate
+                )
+                values
+                (
+                    @LocationId
+                    ,@CattleTypeCode
+                    ,@Birthdate
+                    ,sysutcdatetime()
+                )
+            ;";
+            var values = new { locationId, cattleTypeCode, birthdate };
+            return _conn.ExecuteAsync(sql, values, commandType: CommandType.Text);
+        }
+
     }
 }

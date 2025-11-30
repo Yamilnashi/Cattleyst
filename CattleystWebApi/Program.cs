@@ -1,6 +1,8 @@
 using CattleystWebApi.Extensions;
 using CattleystData.Implementations;
 using CattleystData.Interfaces;
+using CattleystWebApi.Interfaces;
+using CattleystWebApi.Implementations;
 
 namespace CattleystWebApi
 {
@@ -15,9 +17,14 @@ namespace CattleystWebApi
                 throw new ArgumentNullException(nameof(connectionString));  
             }
 
-            System.Transactions.TransactionManager.ImplicitDistributedTransactions = true;
+            if (OperatingSystem.IsWindows())
+            {
+                System.Transactions.TransactionManager.ImplicitDistributedTransactions = true;
+            }            
 
             // Add services to the container.
+            builder.Services.AddMemoryCache();
+            builder.Services.AddScoped<ICacheService, CacheService>();
             builder.Services.AddScoped<IIdpyDbReadContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
             builder.Services.AddScoped<IIdpyDbWriteContext, IdpyDbContext>(serviceProvider => new IdpyDbContext(connectionString));
             builder.Services.AddScoped<IDboDbReadContext, DboDbContext>(serviceProvider => new DboDbContext(connectionString));

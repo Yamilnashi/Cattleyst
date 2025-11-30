@@ -12,6 +12,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CattleystData\CattleystData.csproj" />
+    <ProjectReference Include="..\CattleystWebApi\CattleystWebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

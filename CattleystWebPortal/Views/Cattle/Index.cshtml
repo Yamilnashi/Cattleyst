@@ -12,7 +12,12 @@
         </div>
     </div>
 </div>
-
+<div class="mb-3">
+    <button id="btn-cattle-add" type="button" class="btn btn-primary">
+        <i class="fa fa-cow" aria-hidden="true"></i>
+        Add Cattle
+    </button>
+</div>
 <div class="mb-3">
     <table id="tbl-results" class="table table-sm table-bordered w-100"></table>
 </div>
@@ -20,56 +25,71 @@
 @section Scripts {
     <script>
         'use strict';
-        (() => {
-            const $ddlLocations = $('#ddl-locations');
-            const $tbl = $('#tbl-results');
-            const tables = [];
-            const routePrefix = `/Cattle`;
-            const routes = {
-                cattleListTableJson: `${routePrefix}/CattleListTableJson`
-            }
+        const $ddlLocations = $('#ddl-locations');
+        const $tbl = $('#tbl-results');
+        const $btnCattleAdd = $('#btn-cattle-add');
+        const tables = [];
+        const routePrefix = `/Cattle`;
+        const routes = {
+            cattleListTableJson: `${routePrefix}/CattleListTableJson`,
+            cattleModal: `${routePrefix}/Modal`
+        }
 
-            const cattle = {
-                getCattleListRoute: () => {
-                    let route = routes.cattleListTableJson; 
-                    if ($ddlLocations.val() === '') {
-                        return route;
-                    }
+        const cattle = {
+            getCattleListRoute: () => {
+                let route = routes.cattleListTableJson;
+                if ($ddlLocations.val() === '') {
+                    return route;
+                }
 
-                    return `${route}?locationIds=${$ddlLocations.val()}`;
-                },
-                loadTable: () => {
-                    if (!tables['cattle']) {
-                        tables['cattle'] = $tbl
-                            .DataTable({
-                                ajax: {
-                                    url: cattle.getCattleListRoute()
-                                },
-                                columns: @Html.Raw(Model.ColDefs_CattleTableViewModel),
-                                columnDefs: [
-                                    {
-                                        targets: [0, 1, 2, 3, 4],
-                                        render: function(data, type, row, meta) {
-                                            if (type === 'display') {
-                                                return data;
-                                            }
+                return `${route}?locationIds=${$ddlLocations.val()}`;
+            },
+            loadTable: () => {
+                if (!tables['cattle']) {
+                    tables['cattle'] = $tbl
+                        .DataTable({
+                            ajax: {
+                                url: cattle.getCattleListRoute()
+                            },
+                            columns: @Html.Raw(Model.ColDefs_CattleTableViewModel),
+                            columnDefs: [
+                                {
+                                    targets: [0, 1, 2],
+                                    render: function(data, type, row, meta) {
+                                        if (type === 'display') {
                                             return data;
                                         }
+                                        return data;
                                     }
-                                ]
-                            });
-                    } else {
-                        tables['cattle'].ajax.url(cattle.getCattleListRoute()).load();
-                    }
+                                },
+                                {
+                                    targets: [3, 4], // dob, saved date
+                                    render: function (data, type, row, meta) {
+                                        if (type === 'display') {
+                                            return new moment(data).local().format('MM/DD/YYYY');
+                                        }
+                                        return data;
+                                    }
+                                }
+                            ]
+                        });
+                } else {
+                    tables['cattle'].ajax.url(cattle.getCattleListRoute()).load();
                 }
             }
+        }
 
-            $ddlLocations
-                .on('change', function() {
-                    cattle.loadTable();
-                });
+        $ddlLocations
+            .on('change', function() {
+                cattle.loadTable();
+            });
 
-            cattle.loadTable();
-        })();
+        $btnCattleAdd
+            .on('click', function() {
+                app.eles.modals.modalMd.modal('show');
+                app.loadSpinnerAjax(app.eles.modals.modalMdContent, routes.cattleModal);
+            });
+
+        cattle.loadTable();
     </script>
 }

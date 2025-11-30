@@ -2,6 +2,12 @@
 var app = app || {};
 
 app = {
+    eles: {
+        modals: {
+            modalMd: $('#modal-md'),
+            modalMdContent: $("#modal-md-content")
+        }
+    },
     generateUUID: () => {
         return `xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx`.replace(/[xy]/g, (c) => {
             const r = Math.random() * 16 | 0;

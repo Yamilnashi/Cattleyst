@@ -14,21 +14,12 @@
     </div>
 }
 
-<div class="modal fade" id="modal-md" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div id="modal-md-content" class="modal-content">            
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <script>
         'use strict';
         const $btnAddLocation = $("#btn-add-location");
         const $tbl = $('#tbl-locations');
         const $frmDelete = $('#frm-location-delete');
-        const $modalMd = $('#modal-md');
-        const $modalMdContent = $("#modal-md-content");
         const tables = [];
 
         const routePrefix = `/Location`;
@@ -45,8 +36,8 @@
                         .on('click', 'button.btn-location-edit', function() {
                             const $btn = $(this);
                             const locationId = $btn.data('locationid');
-                            $modalMd.modal('show');
-                            app.loadSpinnerAjax($modalMdContent, routes.locationModal, { locationId });
+                            app.eles.modals.modalMd.modal('show');
+                            app.loadSpinnerAjax(app.eles.modals.modalMdContent, routes.locationModal, { locationId });
                         })
                         .on('click', 'button.btn-location-delete', function() {
                             const $btn = $(this);
@@ -121,8 +112,8 @@
 
         $btnAddLocation
             .on('click', function() {
-                $modalMd.modal('show');
-                app.loadSpinnerAjax($modalMdContent, routes.locationModal, { locationid: null});
+                app.eles.modals.modalMd.modal('show');
+                app.loadSpinnerAjax(app.eles.modals.modalMdContent, routes.locationModal, { locationid: null});
             });
 
         locations.loadTable();

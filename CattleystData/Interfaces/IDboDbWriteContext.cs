@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace CattleystData.Interfaces
 {
@@ -7,5 +8,6 @@ namespace CattleystData.Interfaces
         Task LocationAdd(string locationName);
         Task LocationUpdate(int locationId, string locationName);
         Task LocationDelete(int locationId);
+        Task CattleAdd(int locationId, byte cattleTypeCode, DateTime birthdate);
     }
 }

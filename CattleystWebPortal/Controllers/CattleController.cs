@@ -1,4 +1,5 @@
 ﻿using CattleystData.Models;
+using CattleystWebApi.DTO;
 using CattleystWebPortal.Filters;
 using CattleystWebPortal.Interfaces;
 using CattleystWebPortal.Models.Apis;
@@ -39,6 +40,42 @@ namespace CattleystWebPortal.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        [AjaxOnly]
+        [Route("Modal")]
+        public async Task<IActionResult> Modal(int? cattleId)
+        {
+            CattleModalViewModel model = new CattleModalViewModel()
+            {
+                CattleId = cattleId
+            };
+
+            ApiResult<IEnumerable<Location>> result = await _apiService.GetAsync<IEnumerable<Location>>("location/list");
+            if (result.IsSuccess &&
+                result.Data != null)
+            {
+                model.LocationListItems = result.Data.Select(x => new SelectListItem()
+                {
+                    Text = x.LocationName,
+                    Value = x.LocationId.ToString()
+                }).ToList();
+            }
+
+            return PartialView(model);
+        }
+
+        #region POST
+        [HttpPost]
+        [AjaxOnly]
+        [ValidateAntiForgeryToken]
+        [Route("ModalSave")]
+        public async Task<IActionResult> ModalSave(CattleAddRequest dto)
+        {
+            await _apiService.PostAsJsonAsync("cattle/add", dto);
+            return Content("OK");
+        }
+        #endregion
 
         #region JSON
         [HttpGet]

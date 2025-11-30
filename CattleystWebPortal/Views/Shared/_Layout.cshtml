@@ -34,11 +34,19 @@
 
     @await Html.PartialAsync("~/Views/Shared/_Footer.cshtml")    
 
+    <div class="modal fade" id="modal-md" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div id="modal-md-content" class="modal-content">
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-2.3.5/datatables.min.js" integrity="sha384-0y3De3Rxhdkd4JPUzXfzK6J+7DyDlhLosIUV2OnIgn3Lh1i86pheXHOYUHK85Vwz" crossorigin="anonymous"></script>
     <script src="~/lib/parsley/js/parsley.min.js"></script>
     <script src="~/lib/toastr/js/toastr.min.js"></script>
+    <script src="~/lib/moment/js/moment.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
