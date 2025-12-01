@@ -91,22 +91,15 @@ namespace CattleystData.Implementations
             return _conn.ExecuteAsync(sql, values, commandType: CommandType.Text);
         }
 
-        public Task<IEnumerable<Cattle>> CattleList(int[] locationIds = null)
+        public Task<IEnumerable<Cattle>> CattleList(int[] locations = null)
         {
-            string sql = @"
-                select
-                    CattleId
-                    ,LocationId
-                    ,CattleTypeCode
-                    ,Birthdate
-                    ,SavedDate
-                from
-                    [dbo].[Cattle]
-                where
-                    @LocationIds is null or LocationId in @LocationIds
-            ;";
+            string locationIds = locations == null 
+                ? null
+                : string.Join(",", locations);
+
+            string sql = "[dbo].[CattleList]";
             var values = new { locationIds };
-            return _conn.QueryAsync<Cattle>(sql, values, commandType: CommandType.Text);
+            return _conn.QueryAsync<Cattle>(sql, values, commandType: CommandType.StoredProcedure);
         }
 
         public Task CattleAdd(int locationId, byte cattleTypeCode, DateTime birthdate)
